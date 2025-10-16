@@ -1,7 +1,7 @@
 # ECHO
 
 ### How to Download and Run: 
-- Download the folder
+- Download the folder (Click the Green Code button then 
 - Download VSCode for windows: https://code.visualstudio.com/download 
 - You need to be able to run C++ files so download the extensions for those 
 - Open the folder and run the ASCII Dungeon.sln file 
