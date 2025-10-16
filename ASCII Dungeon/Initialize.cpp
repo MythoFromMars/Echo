@@ -31,7 +31,7 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 	{W.v,W.D,W.h,W.h,W.v},
 	{W.v,'0','0','0',W.v},
 	{W.v,'0',P.c,'0',W.v},
-	{W.v,'0','0','0',W.v},
+	{W.v,P.S,'0','0',W.v},
 	{W.v,W.h,W.c,W.D,W.v}
 	};
 // Exit to 2

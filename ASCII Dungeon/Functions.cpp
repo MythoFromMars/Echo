@@ -95,8 +95,10 @@ void PrintScreen(WorldState& W, PlayerState& P)
 			else if (W.Rooms[P.CRI].Grid[x][y] == P.eH) Color(13);
 			else if (W.Rooms[P.CRI].Grid[x][y] == P.k) Color(2);
 			else if (W.Rooms[P.CRI].Grid[x][y] == '!') Color(2);
-			else if (W.Rooms[P.CRI].Grid[x][y] == P.S || W.Rooms[P.CRI].Grid[x][y] == 'v' || W.Rooms[P.CRI].Grid[x][y] == '^' || W.Rooms[P.CRI].Grid[x][y] == '>' || W.Rooms[P.CRI].Grid[x][y] == '<') Color(11);
-			
+			else if (W.Rooms[P.CRI].Grid[x][y] == P.S || W.Rooms[P.CRI].Grid[x][y] == 'v' || W.Rooms[P.CRI].Grid[x][y] == '^' || W.Rooms[P.CRI].Grid[x][y] == '>' || W.Rooms[P.CRI].Grid[x][y] == '<') {
+				if (P.KillingBlow) Color(4); 
+				else Color(11);
+			}
 
 			printf("%c ", W.Rooms[P.CRI].Grid[x][y]);
 			// This removes the previously scanned location from the echo list 
@@ -407,6 +409,7 @@ void Kill(WorldState& W, PlayerState& P, int X, int Y) {
 			W.Rooms[P.CRI].Enemies[i].Dead = true; 
 		}
 	}
+	P.KillingBlow = true; 
 }
 
 

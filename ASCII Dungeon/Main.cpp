@@ -13,7 +13,7 @@ int main()
 	EnemyState enemyState = {}; 
 
 	//Found in Initialize for ease of access 
-	MainMenu(); 
+	//MainMenu(); 
 	InitializeGame(playerState, worldState);
 
 	while (!playerState.WantsToExit) {

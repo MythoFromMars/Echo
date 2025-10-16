@@ -27,6 +27,7 @@ void RenderGame(PlayerState& P, WorldState& W) {
 			break;
 		}
 		P.Attacking = false;
+		P.KillingBlow = false; 
 	}
 	// Update Map Data
 	if (!W.Rooms[P.CRI].Entered) {

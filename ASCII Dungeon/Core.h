@@ -21,6 +21,7 @@ struct PlayerState
 	//4: Left
 	bool SwordFound = false; 
 	bool Attacking = false;
+	bool KillingBlow = false; 
 	int Facing; 
 	int PreSX;
 	int PreSY; 
