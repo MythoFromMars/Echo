@@ -11,4 +11,5 @@
 - Stay close to walls and pay close attention to the direction they're going
 - Don't move around to fast some information is only on screen until you press another button and you'll miss it
 - The arrow keys technically counts as 2 inputs so don't press them while you're sending out an echolocation or 
-  you'll miss if they hit an enemy 
+  you'll miss if they hit an enemy
+- Read the map and the hints 
