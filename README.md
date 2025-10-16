@@ -2,7 +2,7 @@
 
 ### How to Download and Run: 
 - Download the folder
-- You're gonna need vscode (potentially specifically version 2019 but I think any version should do)
+- Download VSCode for windows: https://code.visualstudio.com/download 
 - You need to be able to run C++ files so download the extensions for those 
 - Open the folder and run the ASCII Dungeon.sln file 
 - Once opened click Local Windows Debugger to run
