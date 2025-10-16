@@ -4,7 +4,7 @@
 - Download the folder (Click the Green Code button then download ZIP)
 - Download VSCode for windows: https://code.visualstudio.com/download 
 - You need to be able to run C++ files so download the extensions for those 
-- Extrack and Open the folder and run the ASCII Dungeon.sln file 
+- Extract and Open the folder and run the ASCII Dungeon.sln file 
 - Once opened click Local Windows Debugger to run
 
 ### Strategy Recommendations: 
