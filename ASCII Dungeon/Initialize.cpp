@@ -28,11 +28,11 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 	Room1.MaxGrid = 5;
 	Room1.Entered = true; 
 	Room1.Grid = {
-	{W.v,W.D,W.h,'0',W.v},
+	{W.v,W.D,W.h,W.h,W.v},
 	{W.v,'0','0','0',W.v},
 	{W.v,'0',P.c,'0',W.v},
-	{'0',P.S,'0','0',W.v},
-	{W.v,'0',W.c,W.D,W.v}
+	{W.v,'0','0','0',W.v},
+	{W.v,W.h,W.c,W.D,W.v}
 	};
 // Exit to 2
 	RoomExits R1ExitTo2{};
