@@ -11,8 +11,11 @@ struct PlayerState
 	int Y = 2; 
 	int PreviewX;
 	int PreviewY;
+
+	//Respawn 
 	int RespawnX = X;
 	int RespawnY = Y;
+	int RespawnCRI = 0; 
 
 	//Sword v^<>
 	//1: Up
@@ -52,6 +55,7 @@ struct PlayerState
 	// Symbols
 	char c = (char)234; //Player
 	char E = (char)232; //Enemy
+	char G = (char)235; //Ghost
 	char eH = (char)238; //Echo
 	char k = (char)168;	//Key
 	char S = (char)245; //Sword
@@ -82,7 +86,12 @@ struct EnemyState
 
 	bool Dead = false; 
 
-	int fading = 2; 
+	int fading = 0; 
+	
+	//Ghost Mode
+	bool Ghost = false; 
+	bool GhostFade = true; 
+	char Replace = '0'; 
 
 };
 

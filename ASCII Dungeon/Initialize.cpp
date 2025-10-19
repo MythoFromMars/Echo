@@ -31,7 +31,7 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 	{W.v,W.D,W.h,W.h,W.v},
 	{W.v,'0','0','0',W.v},
 	{W.v,'0',P.c,'0',W.v},
-	{W.v,'0','0','0',W.v},
+	{W.v,P.S,'0','0',W.v},
 	{W.v,W.h,W.c,W.D,W.v}
 	};
 // Exit to 2
@@ -131,8 +131,8 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 	{W.v,'0',P.k,W.v,'0','0','0',W.v},
 	{W.v,'0','0',W.v,'0',W.v,W.D,W.v},
 	{W.v,W.c,'0',W.v,'0',W.v,'0','0'},
-	{W.v,W.v,'0','0','0',W.v,'0','0'},
-	{W.v,W.v,W.h,W.h,W.h,W.v,'0','0'},
+	{'0',W.v,'0','0','0',W.v,'0','0'},
+	{'0',W.v,W.h,W.h,W.h,W.v,'0','0'},
 	{'0','0','0','0','0','0','0','0'},
 	{'0','0','0','0','0','0','0','0'}
 	};
@@ -190,7 +190,7 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 	{W.v,'0',W.v,'0','0','0'},
 	{W.v,'0',W.v,'0','0','0'},
 	{W.v,'0',W.L,W.h,W.h,W.h},
-	{W.v,P.E,'0','0',P.E,W.D}, 
+	{W.v,P.E,'0','0',P.G,W.D},
 	{W.v,W.h,W.h,W.h,W.h,W.h},
 	};
 	// Exit to 1
@@ -210,6 +210,7 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 // Enemy 2
 	EnemyState E7_2{};
 	AddEnemy(E7_2, 4, 4);
+	E7_2.Ghost = true; 
 	Room7.Enemies.push_back(E7_2);
 	W.Rooms.push_back(Room7);
 	///////////////////////////////ROOM 8/////////////////////////////////////////////////
@@ -219,13 +220,13 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 	Room8.Grid = {
 	{W.v,W.h,W.h,W.h,'0','0','0','0','0','0'},
 	{W.v,'0','!','0',W.f,W.h,W.h,W.h,W.h,W.h},
-	{W.v,'0',W.h,W.h,W.C,'0','0','0','0',W.v},
-	{W.v,'0','0','0','0','0',W.l,W.c,'0',W.v},
+	{W.v,'0',W.h,W.h,W.C,'0',P.G,'0','0',W.v},
+	{W.v,P.G,'0','0','0','0',W.l,W.c,'0',W.v},
 	{W.v,'0',W.l,W.T,W.c,'0',W.L,W.C,'0',W.v},
-	{W.v,'0',W.L,W.t,W.C,'0','0','0','0',W.v},
-	{W.v,'0','0','0','0','0',W.l,W.c,'0',W.v},
+	{W.v,'0',W.L,W.t,W.C,P.E,'0','0','0',W.v},
+	{W.v,P.E,'0','0','0','0',W.l,W.c,'0',W.v},
 	{W.v,W.h,W.h,W.h,W.h,W.h,W.t,W.C,'0',W.v},
-	{'0','0','0',W.D,'0','0','0','0','0',W.v},
+	{'0','0','0',W.D,'0','0','0','0',P.G,W.v},
 	{'0','0','0','0',W.h,W.h,W.h,W.h,W.h,W.v},
 	};
 	// Exit to 7
@@ -233,6 +234,29 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 	AddExit(R8ExitTo7, 3, 8, 7, 4, 4);
 	//Adds Room to global roomdata 
 	Room8.Exits.push_back(R8ExitTo7);
+// Enemy 1
+	EnemyState E8_1{};
+	AddEnemy(E8_1, 8, 8);
+	E8_1.Ghost = true; 
+	Room8.Enemies.push_back(E8_1);
+// Enemy 2
+	EnemyState E8_2{};
+	AddEnemy(E8_2, 3, 1);
+	E8_2.Ghost = true;
+	Room8.Enemies.push_back(E8_2);
+// Enemy 3
+	EnemyState E8_3{};
+	AddEnemy(E8_3, 2, 6);
+	E8_3.Ghost = true;
+	Room8.Enemies.push_back(E8_3);
+// Enemy 4
+	EnemyState E8_4{};
+	AddEnemy(E8_4, 6, 1);
+	Room8.Enemies.push_back(E8_4);
+// Enemy 5
+	EnemyState E8_5{};
+	AddEnemy(E8_5, 5, 5);
+	Room8.Enemies.push_back(E8_5);
 	W.Rooms.push_back(Room8);
 	///////////////////////////////ROOM 9/////////////////////////////////////////////////
 	// Creates Room and Room Data
@@ -242,7 +266,7 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 	{W.v,W.h,W.h,W.h,W.v},
 	{W.v,'0','0','0',W.v},
 	{W.v,'0','0','0',W.D},
-	{W.v,P.S,'0','0',W.v},
+	{W.v,'0','0','0',W.v},
 	{W.v,W.h,W.c,W.h,W.v}
 	};
 	// Exit to 2

@@ -29,31 +29,3 @@ int main()
 	system("pause"); 
 	return 0;
 }
-// Just some enemy pathing I'm hiding here so I don't have to look at it 
-/* Idle state moving up and down
-			if (E.MoveN) {
-				E.X--;
-				if (W.Rooms[P.CRI].Grid[E.X][E.Y] == W.v) {
-					E.X = E.PreX;
-					E.MoveN = false;
-				}
-				else {
-					W.Rooms[P.CRI].Grid[E.X][E.Y] = P.E;
-					W.Rooms[P.CRI].Grid[E.PreX][E.PreY] = '0';
-				}
-			}
-			if (!E.MoveN) {
-				E.X++;
-				if (W.Rooms[P.CRI].Grid[E.X][E.Y] == W.v) {
-					E.X = E.PreX;
-					E.MoveN = true;
-					E.X--;
-					W.Rooms[P.CRI].Grid[E.X][E.Y] = P.E;
-					W.Rooms[P.CRI].Grid[E.PreX][E.PreY] = '0';
-				}
-				else {
-					W.Rooms[P.CRI].Grid[E.X][E.Y] = P.E;
-					W.Rooms[P.CRI].Grid[E.PreX][E.PreY] = '0';
-				}
-			}
-			*/

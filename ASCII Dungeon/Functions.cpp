@@ -16,7 +16,7 @@
 //7: Default white
 //8: Gray/Grey
 //9: Bright blue
-//10: Brigth green
+//10: Bright green
 //11: Bright cyan
 //12: Bright red
 //13: Pink/Magenta
@@ -29,9 +29,15 @@ void Color(int color)
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
 
-void debug(int i) {
+void debugI(int i) {
 	Color(7);
 	printf("%d\n", i);
+	Sleep(1000);
+}
+
+void debugC(char i) {
+	Color(7);
+	printf("%c\n", i);
 	Sleep(1000);
 }
 
@@ -64,13 +70,13 @@ void PrintScreen(WorldState& W, PlayerState& P)
 			}
 			// SET COLOR Based on value of current entry being printed 
 			if (W.Rooms[P.CRI].Grid[x][y] == W.v || W.Rooms[P.CRI].Grid[x][y] == W.h || W.Rooms[P.CRI].Grid[x][y] == W.c || W.Rooms[P.CRI].Grid[x][y] == W.C || W.Rooms[P.CRI].Grid[x][y] == W.l || W.Rooms[P.CRI].Grid[x][y] == W.L || W.Rooms[P.CRI].Grid[x][y] == W.T || W.Rooms[P.CRI].Grid[x][y] == W.t || W.Rooms[P.CRI].Grid[x][y] == W.F || W.Rooms[P.CRI].Grid[x][y] == W.f) Color(0);
-			if (W.Rooms[P.CRI].Grid[x][y] == P.E) Color(0);
+			if (W.Rooms[P.CRI].Grid[x][y] == P.E || W.Rooms[P.CRI].Grid[x][y] == P.G) Color(0);
 			if (W.Rooms[P.CRI].Grid[x][y] == W.D) Color(0);
 			if (W.Rooms[P.CRI].Grid[x][y] == W.LD) Color(0);
 			
 			// If the currently printed out corrodinate is a wall or door check if it matches a corrodinate set from the echo list
 			// If yes set the color to White or Blue accordingly
-			if (W.Rooms[P.CRI].Grid[x][y] == W.D || W.Rooms[P.CRI].Grid[x][y] == W.LD || W.Rooms[P.CRI].Grid[x][y] == W.v || W.Rooms[P.CRI].Grid[x][y] == W.h || W.Rooms[P.CRI].Grid[x][y] == P.E ||  W.Rooms[P.CRI].Grid[x][y] == W.c || W.Rooms[P.CRI].Grid[x][y] == W.C || W.Rooms[P.CRI].Grid[x][y] == W.l || W.Rooms[P.CRI].Grid[x][y] == W.L || W.Rooms[P.CRI].Grid[x][y] == W.T || W.Rooms[P.CRI].Grid[x][y] == W.t || W.Rooms[P.CRI].Grid[x][y] == W.F || W.Rooms[P.CRI].Grid[x][y] == W.f) {
+			if (W.Rooms[P.CRI].Grid[x][y] == P.E || W.Rooms[P.CRI].Grid[x][y] == P.G || W.Rooms[P.CRI].Grid[x][y] == W.D || W.Rooms[P.CRI].Grid[x][y] == W.LD || W.Rooms[P.CRI].Grid[x][y] == W.v || W.Rooms[P.CRI].Grid[x][y] == W.h ||  W.Rooms[P.CRI].Grid[x][y] == W.c || W.Rooms[P.CRI].Grid[x][y] == W.C || W.Rooms[P.CRI].Grid[x][y] == W.l || W.Rooms[P.CRI].Grid[x][y] == W.L || W.Rooms[P.CRI].Grid[x][y] == W.T || W.Rooms[P.CRI].Grid[x][y] == W.t || W.Rooms[P.CRI].Grid[x][y] == W.F || W.Rooms[P.CRI].Grid[x][y] == W.f) {
 				for (int i = 0; i < W.Rooms[P.CRI].ScannedSpaces.size(); i++) {
 					if ((x == W.Rooms[P.CRI].ScannedSpaces[i][0]) && (y == W.Rooms[P.CRI].ScannedSpaces[i][1])) {
 						if (W.Rooms[P.CRI].Grid[x][y] == W.v || W.Rooms[P.CRI].Grid[x][y] == W.h) Color(7);
@@ -82,8 +88,21 @@ void PrintScreen(WorldState& W, PlayerState& P)
 						else if (W.Rooms[P.CRI].Grid[x][y] == P.E) {
 							for (int n = 0; n < W.Rooms[P.CRI].Enemies.size(); n++) {
 								if ((x == W.Rooms[P.CRI].Enemies[n].X) && (y == W.Rooms[P.CRI].Enemies[n].Y)) {
-									if (W.Rooms[P.CRI].Enemies[n].fading == 2) Color(4);
-									else Color(12);
+									if (W.Rooms[P.CRI].Enemies[n].fading >= 2) Color(4);
+									else if (W.Rooms[P.CRI].Enemies[n].fading == 1) Color(12);
+									else if (W.Rooms[P.CRI].Enemies[n].fading == -1) Color(8); 
+									else Color(0); 
+								}
+							}
+						}
+						//Ghost Color Fades
+						else if (W.Rooms[P.CRI].Grid[x][y] == P.G) {
+							for (int n = 0; n < W.Rooms[P.CRI].Enemies.size(); n++) {
+								if ((x == W.Rooms[P.CRI].Enemies[n].X) && (y == W.Rooms[P.CRI].Enemies[n].Y)) {
+									if (W.Rooms[P.CRI].Enemies[n].fading >= 2) Color(4);
+									else if (W.Rooms[P.CRI].Enemies[n].fading == 1) Color(12);
+									else if (W.Rooms[P.CRI].Enemies[n].fading == -1) Color(8);
+									else Color(0);
 								}
 							}
 						}
@@ -93,8 +112,8 @@ void PrintScreen(WorldState& W, PlayerState& P)
 			if (W.Rooms[P.CRI].Grid[x][y] == P.c) Color(9);
 			else if (W.Rooms[P.CRI].Grid[x][y] == '0') Color(0);
 			else if (W.Rooms[P.CRI].Grid[x][y] == P.eH) Color(13);
-			else if (W.Rooms[P.CRI].Grid[x][y] == P.k) Color(2);
-			else if (W.Rooms[P.CRI].Grid[x][y] == '!') Color(2);
+			else if (W.Rooms[P.CRI].Grid[x][y] == P.k) Color(14);
+			else if (W.Rooms[P.CRI].Grid[x][y] == '!') Color(14);
 			else if (W.Rooms[P.CRI].Grid[x][y] == P.S || W.Rooms[P.CRI].Grid[x][y] == 'v' || W.Rooms[P.CRI].Grid[x][y] == '^' || W.Rooms[P.CRI].Grid[x][y] == '>' || W.Rooms[P.CRI].Grid[x][y] == '<') {
 				if (P.KillingBlow) Color(4); 
 				else Color(11);
@@ -103,7 +122,7 @@ void PrintScreen(WorldState& W, PlayerState& P)
 			printf("%c ", W.Rooms[P.CRI].Grid[x][y]);
 			// This removes the previously scanned location from the echo list 
 			// Compare current x, y against each enemyscannedroom 
-			if (W.Rooms[P.CRI].Grid[x][y] == P.E) {
+			if (W.Rooms[P.CRI].Grid[x][y] == P.E || W.Rooms[P.CRI].Grid[x][y] == P.G) {
 				for (int i = 0; i < W.Rooms[P.CRI].EnemyScannedSpaces.size(); i++) {
 					if ((x == W.Rooms[P.CRI].EnemyScannedSpaces[i][0]) && (y == W.Rooms[P.CRI].EnemyScannedSpaces[i][1])) {
 						for (int n = 0; n < W.Rooms[P.CRI].ScannedSpaces.size(); n++) {
@@ -183,15 +202,21 @@ void Inventory(WorldState& W, PlayerState& P) {
 	Color(12);
 	printf("%c", P.E);
 	Color(7);
-	printf(": Enemy (Moves towards whatever it hears)\n\n");
-	Color(2);
+	printf(": Monster (They are blind and only move towards sounds)\n\n");
+	Color(12);
+	printf("%c", P.G);
+	Color(7);
+	printf(": Lost Soul (Blind but can hear through walls)\n\n");
+	Color(14);
 	printf("%c", P.k);
 	Color(7);
 	printf(": Key Piece (Two make a key)\n\n");
-	Color(11); 
-	printf("%c", P.S);
-	Color(7);
-	printf(": The Sword\n\n");
+	if (P.SwordFound) {
+		Color(11);
+		printf("%c", P.S);
+		Color(7);
+		printf(": The Sword (Press E to Attack)\n\n");
+	}
 
 	char input = 0;
 	printf("(Press R to close)");
@@ -347,7 +372,7 @@ void Respawn(WorldState& W, PlayerState& P) {
 	int u = 0; 
 	for (u; u < W.Rooms.size(); u++) {
 		if (W.Rooms[u].Enemies.size() - 1 == 0) {
-			W.Rooms[u].Grid[W.Rooms[u].Enemies[0].X][W.Rooms[u].Enemies[0].Y] = '0';
+			W.Rooms[u].Grid[W.Rooms[u].Enemies[0].X][W.Rooms[u].Enemies[0].Y] = W.Rooms[u].Enemies[0].Replace;
 			W.Rooms[u].Enemies[0].X = W.Rooms[u].Enemies[0].RX;
 			W.Rooms[u].Enemies[0].Y = W.Rooms[u].Enemies[0].RY;
 			W.Rooms[u].Grid[W.Rooms[u].Enemies[0].X][W.Rooms[u].Enemies[0].Y] = P.E;
@@ -355,31 +380,51 @@ void Respawn(WorldState& W, PlayerState& P) {
 			W.Rooms[u].Enemies[0].TarY = W.Rooms[u].Enemies[0].Y;
 			W.Rooms[u].Enemies[0].SetTar = false; 
 			W.Rooms[u].Enemies[0].Dead = false; 
+			W.Rooms[u].Enemies[0].Replace = '0';
+			W.Rooms[u].Enemies[0].fading = 0; 
 		}
 		else {
 			for (int n = 0; n < W.Rooms[u].Enemies.size(); n++) {
-				W.Rooms[u].Grid[W.Rooms[u].Enemies[n].X][W.Rooms[u].Enemies[n].Y] = '0';
+				W.Rooms[u].Grid[W.Rooms[u].Enemies[n].X][W.Rooms[u].Enemies[n].Y] = W.Rooms[u].Enemies[n].Replace;
 				W.Rooms[u].Enemies[n].X = W.Rooms[u].Enemies[n].RX;
 				W.Rooms[u].Enemies[n].Y = W.Rooms[u].Enemies[n].RY;
 				W.Rooms[u].Grid[W.Rooms[u].Enemies[n].X][W.Rooms[u].Enemies[n].Y] = P.E;
 				W.Rooms[u].Enemies[n].TarX = W.Rooms[u].Enemies[n].X;
 				W.Rooms[u].Enemies[n].TarY = W.Rooms[u].Enemies[n].Y;
 				W.Rooms[u].Enemies[n].SetTar = false;
-				W.Rooms[u].Enemies[n].Dead = false;
+				W.Rooms[u].Enemies[n].Dead = false; 
+				W.Rooms[u].Enemies[n].Replace = '0';
+				W.Rooms[u].Enemies[n].fading = 0;
 			}
 		}
 	}
 	//Reset Sword
 	P.Attacking = false; 
+	switch (P.Facing) {
+	case 1:
+		W.Rooms[P.CRI].Grid[P.PreSX][P.Y] = P.PreSChar;
+		break;
+	case 2:
+		W.Rooms[P.CRI].Grid[P.X][P.PreSY] = P.PreSChar;
+		break;
+	case 3:
+		W.Rooms[P.CRI].Grid[P.PreSX][P.Y] = P.PreSChar;
+		break;
+	case 4:
+		W.Rooms[P.CRI].Grid[P.X][P.PreSY] = P.PreSChar;
+		break;
+	}
 
 	//Reset Previous Echo 
-	W.Rooms[P.CRI].Grid[P.EchoX][P.EchoY] = '0';
-
+	if (W.Rooms[P.CRI].Grid[P.EchoX][P.EchoY] == P.eH) W.Rooms[P.CRI].Grid[P.EchoX][P.EchoY] = '0';
+	P.Echoing = false; 
+	P.CanEcho = true; 
+	
 	// Reset Player Position
 	W.Rooms[P.CRI].Grid[P.PreviewX][P.PreviewY] = '0';
 	P.X = P.RespawnX;
 	P.Y = P.RespawnY;
-	P.CRI = 0; 
+	P.CRI = P.RespawnCRI; 
 	W.Rooms[P.CRI].Grid[P.X][P.Y] = P.c;
 	// Reset Echo
 	P.EchoX = P.X;

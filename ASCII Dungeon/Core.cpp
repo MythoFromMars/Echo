@@ -9,7 +9,11 @@
 
 // ********************************************* DISPLAY ***************************************************
 void RenderGame(PlayerState& P, WorldState& W) {
+	//Bit of redunancy to make sure the player never gets over written 
+	W.Rooms[P.CRI].Grid[P.X][P.Y] = P.c; 
+
 	PrintScreen(W, P);
+
 	//Sword Reset 
 	if (P.Attacking) {
 		switch (P.Facing) {
@@ -61,13 +65,14 @@ void RenderGame(PlayerState& P, WorldState& W) {
 			break;
 		}
 	}
+	//Player wins
+	if (P.CRI == 8) {
+		P.WontheGame = true;
+		P.WantsToExit = true;
+	}
 }
 // ********************************************** UPDATE ***************************************************	
 void UpdateGame(PlayerState& P, WorldState& W) {
-	if (P.CRI == 8) {
-		P.WontheGame = true;
-		P.WantsToExit = true; 
-	}
 	
 	//Index of current enemy being effected
 	int i = 0; 
@@ -96,9 +101,11 @@ void UpdateGame(PlayerState& P, WorldState& W) {
 				// If you hit an enemy
 				if (W.Rooms[P.CRI].Grid[P.EchoX][P.EchoY] == P.E) {
 					if (W.Rooms[P.CRI].Enemies.size() - 1 > 0) i = GetEnemyIndex(P, W);
-					W.Rooms[P.CRI].EnemyScannedSpaces.push_back({ P.EchoX, P.EchoY });
-					W.Rooms[P.CRI].Enemies[i].SetTar = true;
-					W.Rooms[P.CRI].Enemies[i].fading = 2;
+					if (!W.Rooms[P.CRI].Enemies[i].Ghost) {
+						W.Rooms[P.CRI].EnemyScannedSpaces.push_back({ P.EchoX, P.EchoY });
+						W.Rooms[P.CRI].Enemies[i].SetTar = true;
+						W.Rooms[P.CRI].Enemies[i].fading = 2;
+					}
 				}
 				if (W.Rooms[P.CRI].Grid[P.PreEchoX][P.PreEchoY] != P.c) {
 					W.Rooms[P.CRI].Grid[P.PreEchoX][P.PreEchoY] = '0';
@@ -129,6 +136,7 @@ void UpdateGame(PlayerState& P, WorldState& W) {
 		P.EchoX = P.X;
 		P.EchoY = P.Y;
 	}
+
 	//ENEMY 
 	// Checks if there are any enemies 
 	if (W.Rooms[P.CRI].Enemies.size()) {
@@ -136,51 +144,103 @@ void UpdateGame(PlayerState& P, WorldState& W) {
 		for (int i = 0; i < W.Rooms[P.CRI].Enemies.size(); i++) {
 			EnemyState& E = W.Rooms[P.CRI].Enemies[i];
 			if (!E.Dead) {
-				W.Rooms[P.CRI].Grid[E.X][E.Y] = P.E;
+				if (E.Ghost) W.Rooms[P.CRI].Grid[E.X][E.Y] = P.G;
+				else W.Rooms[P.CRI].Grid[E.X][E.Y] = P.E;
 				E.PreX = E.X;
 				E.PreY = E.Y;
-				// If Target Up
+				if (W.Rooms[P.CRI].Grid[E.TarX][E.TarY] == P.E || W.Rooms[P.CRI].Grid[E.TarX][E.TarY] == P.G) {
+					E.TarX = E.X;
+					E.TarY = E.Y; 
+				}
+	// If Target Up
 				if (E.X > E.TarX) {
 					E.X--;
-					W.Rooms[P.CRI].Grid[E.X][E.Y] = P.E;
-					W.Rooms[P.CRI].Grid[E.PreX][E.PreY] = '0';
-					if (E.fading == 2) {
-						W.Rooms[P.CRI].ScannedSpaces.push_back({ E.X, E.Y });
-						W.Rooms[P.CRI].EnemyScannedSpaces.push_back({ E.X, E.Y });
-						E.fading--; 
+					if (E.Replace != P.eH && E.Replace != P.G) W.Rooms[P.CRI].Grid[E.PreX][E.PreY] = E.Replace;
+					else if (W.Rooms[P.CRI].Grid[E.PreX][E.PreY] != P.c) W.Rooms[P.CRI].Grid[E.PreX][E.PreY] = '0';
+					E.Replace = W.Rooms[P.CRI].Grid[E.X][E.Y];
+					if (E.Ghost) W.Rooms[P.CRI].Grid[E.X][E.Y] = P.G;
+					else {
+						W.Rooms[P.CRI].Grid[E.X][E.Y] = P.E;
+						if (E.fading >= 2) {
+							W.Rooms[P.CRI].ScannedSpaces.push_back({ E.X, E.Y });
+							W.Rooms[P.CRI].EnemyScannedSpaces.push_back({ E.X, E.Y });
+							E.fading--;
+						}
 					}
+					E.PreX = E.X;
 				}
-				// If Target Down
+	// If Target Down
 				else if (E.X < E.TarX) {
 					E.X++;
-					W.Rooms[P.CRI].Grid[E.X][E.Y] = P.E;
-					W.Rooms[P.CRI].Grid[E.PreX][E.PreY] = '0';
-					if (E.fading == 2) {
-						W.Rooms[P.CRI].ScannedSpaces.push_back({ E.X, E.Y });
-						W.Rooms[P.CRI].EnemyScannedSpaces.push_back({ E.X, E.Y });
-						E.fading--;
+					if (E.Replace != P.eH && E.Replace != P.G) W.Rooms[P.CRI].Grid[E.PreX][E.PreY] = E.Replace;
+					else if (W.Rooms[P.CRI].Grid[E.PreX][E.PreY] != P.c) W.Rooms[P.CRI].Grid[E.PreX][E.PreY] = '0';
+					E.Replace = W.Rooms[P.CRI].Grid[E.X][E.Y];
+					if (E.Ghost) W.Rooms[P.CRI].Grid[E.X][E.Y] = P.G;
+					else {
+						W.Rooms[P.CRI].Grid[E.X][E.Y] = P.E;
+						if (E.fading >= 2) {
+							W.Rooms[P.CRI].ScannedSpaces.push_back({ E.X, E.Y });
+							W.Rooms[P.CRI].EnemyScannedSpaces.push_back({ E.X, E.Y });
+							E.fading--;
+						}
 					}
+					E.PreX = E.X;
 				}
-				// If Target Right
-				else if (E.Y < E.TarY) {
+	// If Target Right
+				if (E.Y < E.TarY) {
 					E.Y++;
-					W.Rooms[P.CRI].Grid[E.X][E.Y] = P.E;
-					W.Rooms[P.CRI].Grid[E.PreX][E.PreY] = '0';
-					if (E.fading == 2) {
-						W.Rooms[P.CRI].ScannedSpaces.push_back({ E.X, E.Y });
-						W.Rooms[P.CRI].EnemyScannedSpaces.push_back({ E.X, E.Y });
-						E.fading--;
+					if (E.Replace != P.eH && E.Replace != P.G) W.Rooms[P.CRI].Grid[E.PreX][E.PreY] = E.Replace;
+					else if (W.Rooms[P.CRI].Grid[E.PreX][E.PreY] != P.c) W.Rooms[P.CRI].Grid[E.PreX][E.PreY] = '0';
+					E.Replace = W.Rooms[P.CRI].Grid[E.X][E.Y];
+					if (E.Ghost) W.Rooms[P.CRI].Grid[E.X][E.Y] = P.G;
+					else {
+						W.Rooms[P.CRI].Grid[E.X][E.Y] = P.E;
+						if (E.fading >= 2) {
+							W.Rooms[P.CRI].ScannedSpaces.push_back({ E.X, E.Y });
+							W.Rooms[P.CRI].EnemyScannedSpaces.push_back({ E.X, E.Y });
+							E.fading--;
+						}
 					}
+					E.PreY = E.Y;
 				}
-				// If Target Left
+	// If Target Left
 				else if (E.Y > E.TarY) {
 					E.Y--;
-					W.Rooms[P.CRI].Grid[E.X][E.Y] = P.E;
-					W.Rooms[P.CRI].Grid[E.PreX][E.PreY] = '0';
-					if (E.fading == 2) {
+					if (E.Replace != P.eH && E.Replace != P.G) W.Rooms[P.CRI].Grid[E.PreX][E.PreY] = E.Replace;
+					else if(W.Rooms[P.CRI].Grid[E.PreX][E.PreY] != P.c) W.Rooms[P.CRI].Grid[E.PreX][E.PreY] = '0';
+					E.Replace = W.Rooms[P.CRI].Grid[E.X][E.Y];
+					if(E.Ghost) W.Rooms[P.CRI].Grid[E.X][E.Y] = P.G;
+					else {
+						W.Rooms[P.CRI].Grid[E.X][E.Y] = P.E;
+						if (E.fading >= 2) {
+							W.Rooms[P.CRI].ScannedSpaces.push_back({ E.X, E.Y });
+							W.Rooms[P.CRI].EnemyScannedSpaces.push_back({ E.X, E.Y });
+							E.fading--;
+						}
+					}
+					E.PreY = E.Y;
+				}
+	// If Ghost
+				if (E.Ghost) {
+					if ((E.Replace != '0') && (W.Rooms[P.CRI].Grid[E.X][E.Y] != P.G || W.Rooms[P.CRI].Grid[E.X][E.Y] != P.E)) {
+						E.GhostFade = false;
+						E.fading = -1; 
+						W.Rooms[P.CRI].ScannedSpaces.push_back({ E.X, E.Y });
+						W.Rooms[P.CRI].EnemyScannedSpaces.push_back({ E.X, E.Y });
+					}
+					if (P.Echoing) {
+						E.TarX = P.AtEchoX;
+						E.TarY = P.AtEchoY;
+						if (E.GhostFade) E.fading = 3; 
+					}
+					if (E.fading >= 1) {
+						E.GhostFade = false; 
 						W.Rooms[P.CRI].ScannedSpaces.push_back({ E.X, E.Y });
 						W.Rooms[P.CRI].EnemyScannedSpaces.push_back({ E.X, E.Y });
 						E.fading--;
+					}
+					if (!P.Echoing) {
+						E.GhostFade = true;
 					}
 				}
 				// Player Dies
@@ -263,7 +323,7 @@ void PlayerInput(PlayerState& P, WorldState& W) {
 					if (W.Rooms[P.CRI].Grid[P.PreSX][P.Y] == P.eH) {
 						P.PreSChar = '0';
 					}
-					else if (W.Rooms[P.CRI].Grid[P.PreSX][P.Y] == P.E) {
+					else if (W.Rooms[P.CRI].Grid[P.PreSX][P.Y] == P.E || W.Rooms[P.CRI].Grid[P.PreSX][P.Y] == P.G) {
 						Kill(W, P, P.PreSX, P.Y);
 						P.PreSChar = '0';
 					}
@@ -281,7 +341,7 @@ void PlayerInput(PlayerState& P, WorldState& W) {
 						P.PreSChar = '0';
 					}
 					//If Enemy
-					else if (W.Rooms[P.CRI].Grid[P.X][P.PreSY] == P.E) {
+					else if (W.Rooms[P.CRI].Grid[P.X][P.PreSY] == P.E || W.Rooms[P.CRI].Grid[P.X][P.PreSY] == P.G) {
 						Kill(W, P, P.X, P.PreSY);
 						P.PreSChar = '0';
 					}
@@ -299,7 +359,7 @@ void PlayerInput(PlayerState& P, WorldState& W) {
 						P.PreSChar = '0';
 					}
 					//If Enemy
-					else if (W.Rooms[P.CRI].Grid[P.PreSX][P.Y] == P.E) {
+					else if (W.Rooms[P.CRI].Grid[P.PreSX][P.Y] == P.E || W.Rooms[P.CRI].Grid[P.PreSX][P.Y] == P.G) {
 						Kill(W, P, P.PreSX, P.Y);
 						P.PreSChar = '0';
 					}
@@ -317,7 +377,7 @@ void PlayerInput(PlayerState& P, WorldState& W) {
 						P.PreSChar = '0';
 					}
 					//If Enemy
-					else if (W.Rooms[P.CRI].Grid[P.X][P.PreSY] == P.E) {
+					else if (W.Rooms[P.CRI].Grid[P.X][P.PreSY] == P.E || W.Rooms[P.CRI].Grid[P.X][P.PreSY] == P.G) {
 						Kill(W, P, P.X, P.PreSY);
 						P.PreSChar = '0';
 					}
@@ -365,8 +425,17 @@ void PlayerInput(PlayerState& P, WorldState& W) {
 						P.EchoX = P.X;
 						P.EchoY = P.Y;
 						P.Echoing = false;
+						P.EchoingN = false;
+						P.EchoingS = false;
+						P.EchoingE = false;
+						P.EchoingW = false;
 						// Update the goal progression 
 						switch (P.CRI) {
+						case 0:
+							P.RespawnCRI = 0;
+							P.RespawnX = 2;
+							P.RespawnY = 2;
+							break;
 						case 2:
 							if (P.GoalProgression == 0) {
 								P.Goal = "Find the Key Pieces in the shops";
@@ -378,6 +447,10 @@ void PlayerInput(PlayerState& P, WorldState& W) {
 							}
 							break;
 						case 5:
+							P.RespawnCRI = 5;
+							P.RespawnX = 3;
+							P.RespawnY = 3;
+
 							P.GoalProgression = 2;
 							if (P.GoalProgression == 2) {
 								P.Goal = "Take the sword and head south to the castle";
@@ -401,7 +474,7 @@ void PlayerInput(PlayerState& P, WorldState& W) {
 			}
 		}
 		///////////////////////////////////////IF ENEMY////////////////////////////////////////////////////// 
-		else if (W.Rooms[P.CRI].Grid[P.X][P.Y] == P.E) {
+		else if (W.Rooms[P.CRI].Grid[P.X][P.Y] == P.E || W.Rooms[P.CRI].Grid[P.X][P.Y] == P.G) {
 			Respawn(W, P);
 		}
 		// Otherwise new position becomes 9 and old position becomes a 0 
