@@ -14,3 +14,5 @@
 - The arrow keys technically counts as 2 inputs so don't press them while you're sending out an echolocation or 
   you'll miss if they hit an enemy
 - Read the map and the hints 
+
+- Check out the Walkthrough
