@@ -20,6 +20,14 @@ void AddEnemy(EnemyState& E, int X, int Y) {
 	E.RX = X; 
 	E.RY = Y; 
 }
+void AddBossNode(BossState& B, int X, int Y, int Direction) {
+	B.X = X;
+	B.Y = Y; 
+	B.PreX = X; 
+	B.PreY = Y; 
+	B.TarDirection = Direction; 
+
+}
 
 void InitializeGame(PlayerState& P, WorldState& W) {
 	///////////////////////////////ROOM 1/////////////////////////////////////////////////
@@ -50,7 +58,7 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 	RoomData Room2{};
 	Room2.MaxGrid = 9;
 	Room2.Grid = {
-	{W.v,W.h,W.h,W.h,W.h,W.v,W.h,W.t,W.v},
+	{W.v,W.t,W.h,W.h,W.h,W.v,W.h,W.t,W.v},
 	{W.F,P.E,'0','0','0',W.v,P.E,'0',W.v},
 	{W.v,'0','0',W.v,'0',W.v,'0','0',W.L},
 	{W.v,'0','0',W.v,'0','0','0','0',W.D},
@@ -128,7 +136,7 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 	Room4.MaxGrid = 8;
 	Room4.Grid = {
 	{W.v,W.h,W.h,W.h,W.h,W.h,W.h,W.v},
-	{W.v,'0',P.k,W.v,'0','0','0',W.v},
+	{W.F,'0',P.k,W.v,'0','0','0',W.v},
 	{W.v,'0','0',W.v,'0',W.v,W.D,W.v},
 	{W.v,W.c,'0',W.v,'0',W.v,'0','0'},
 	{'0',W.v,'0','0','0',W.v,'0','0'},
@@ -268,7 +276,7 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 	Room9.MaxGrid = 8;
 	Room9.Grid = {
 	{W.v,W.h,W.D,W.h,W.v,'0','0','0'},
-	{W.v,P.S,'0','0',W.v,'0','0','0'},
+	{W.v,'0','0','0',W.v,'0','0','0'},
 	{W.v,'0','0','0',W.v,'0','0','0'},
 	{W.v,'0','0','0',W.L,W.h,W.h,W.v},
 	{W.v,'0','0','0','0','0','0',W.v},
@@ -293,19 +301,19 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 	Room10.MaxGrid = 15;
 	Room10.Grid = {
 	{W.v,W.h,W.h,W.h,W.h,W.h,W.h,W.h,W.h,W.h,W.h,W.h,W.h,W.h,W.v},
-	{W.v,'0','0','0','0','0','0','0','0','0','0','0','0','0',W.v},
-	{W.v,'0','0','0','0','0','0','0','0','0','0','0','0','0',W.v},
-	{W.v,'0','0','0','0','0','0','0','0','0','0','0','0','0',W.v},
-	{W.v,'0','0','0','0','0','0','0','0','0','0','0','0','0',W.v},
-	{W.v,'0','0','0','0','0','0','0','0','0','0','0','0','0',W.v},
-	{W.v,'0','0','0','0','0','0','0','0','0','0','0','0','0',W.v},
-	{W.v,'0','0','0','0','0','0','0','0','0','0','0','0','0',W.v},
-	{W.v,'0','0','0',P.B,'0','0','0','0',W.v,'0','0','0','0',W.v},
-	{W.v,'0','0','0','0','0','0','0','0','0','0','0','0','0',W.v},
-	{W.v,'0','0','0','0','0','0','0','0','0','0','0','0','0',W.v},
-	{W.v,W.h,W.D,W.h,W.c,'0','0','0','0','0','0','0','0','0',W.f},
-	{W.v,'0','0','0',W.v,'0','0','0','0','0','0','0','0','0',W.v},
-	{W.v,'0','0','0',W.v,'0','0',W.l,W.h,W.h,W.h,W.h,W.T,W.h,W.v},
+	{W.v,'0','0','0','0','0','0',W.v,'0','0','0','0','0','0',W.v},
+	{W.v,'0',P.B,'0','0','0','0','0','0','0','0','0','0','0',W.v},
+	{W.v,'0','0','0',W.l,W.h,W.h,W.h,W.h,W.h,W.h,'0',W.S,'0',W.v},
+	{W.v,'0','0','0',W.v,'0','0','0','0','0','0','0','0',P.B,W.v},
+	{W.v,'0','0','0',W.v,'0','0','0','0','0','0',W.h,W.h,'0',W.v},
+	{W.v,'0','0','0',W.v,'0',W.v,'0','0','0','0','0','0','0',W.v},
+	{W.v,'0',W.h,W.h,W.C,'0',W.v,'0',W.v,'0','0','0','0','0',W.v},
+	{W.v,'0','0','0','0','0','0',P.B,W.v,'0',W.h,W.h,'0','0',W.v},
+	{W.v,'0','0','0','0',W.h,W.c,'0','0','0','0','0','0','0',W.v},
+	{W.v,'0','0','0','0','0',W.v,'0',W.v,'0',W.v,'0','0','0',W.v},
+	{W.v,W.h,W.D,W.h,W.c,'0','0','0',W.v,'0',W.L,W.h,'0',W.h,W.f},
+	{W.v,'0','0','0',W.v,'0','0','0',W.v,P.B,'0','0',P.B,'0',W.v},
+	{W.v,'0','0','0',W.v,P.B,'0',W.l,W.h,W.h,W.h,W.h,W.T,W.h,W.v},
 	{W.v,'0','0','0',W.v,W.h,W.h,W.h,'0','0','0','0','0','0',W.v}
 	};
 // Exit to 2
@@ -313,14 +321,34 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 	AddExit(R10ExitTo9, 2, 11, 9, 2, 1);
 	//Adds Room to global roomdata 
 	Room10.Exits.push_back(R10ExitTo9);
+	
 // Boss Point 1
 	BossState Point1{};
-	Point1.X = 8;
-	Point1.Y = 4;
-	Point1.PreX = Point1.X;
-	Point1.PreY = Point1.Y;
-	Point1.TarDirection = 1;
+	AddBossNode(Point1, 2, 2, 2);
 	Room10.Boss.push_back(Point1);
+	
+// Boss Point 2
+	BossState Point2{};
+	AddBossNode(Point2, 13, 5, 1);
+	Room10.Boss.push_back(Point2);
+
+// Boss Point 3
+	BossState Point3{};
+	AddBossNode(Point3, 8, 7, 3);
+	Room10.Boss.push_back(Point3);
+// Boss Point 4
+	BossState Point4{};
+	AddBossNode(Point4, 12, 9, 1);
+	Room10.Boss.push_back(Point4);
+// Boss Point 5
+	BossState Point5{};
+	AddBossNode(Point5, 12, 12, 1);
+	Room10.Boss.push_back(Point5);
+// Boss Point 6
+	BossState Point6{};
+	AddBossNode(Point6, 4, 13, 3);
+	Room10.Boss.push_back(Point6);
+
 	W.Rooms.push_back(Room10);
  
 

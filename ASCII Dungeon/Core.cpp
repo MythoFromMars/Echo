@@ -7,7 +7,7 @@
 #include "Initialize.h"
 #include "Core.h"
 
-// ********************************************* DISPLAY ***************************************************
+// ***************************************************************************************** DISPLAY **********************************************************************************************
 void RenderGame(PlayerState& P, WorldState& W) {
 	//Bit of redunancy to make sure the player never gets over written 
 	W.Rooms[P.CRI].Grid[P.X][P.Y] = P.c; 
@@ -56,9 +56,12 @@ void RenderGame(PlayerState& P, WorldState& W) {
 			break;
 		case 5:
 			W.MapList.push_back(W.Room6);
+			printslow("| KeyCode Updated", 30);
 			break;
 		case 6:
 			W.MapList.push_back(W.Room7);
+			printslow("| KeyCode Updated", 30); 
+			P.GhostEncountered = true; 
 			break;
 		case 7:
 			W.MapList.push_back(W.Room8);
@@ -68,18 +71,18 @@ void RenderGame(PlayerState& P, WorldState& W) {
 			break;
 		case 9:
 			W.MapList.push_back(W.Room10);
+			printslow("| KeyCode Updated", 30);
+			P.BossEncountered = true; 
 			break;
 		}
 	}
 	//Player wins
-	/*
-	if (P.CRI == 9) {
+	if (P.BossHealth == 0) {
 		P.WontheGame = true;
 		P.WantsToExit = true;
 	}
-	*/
 }
-// ********************************************** UPDATE ***************************************************	
+// *************************************************************************************** UPDATE ************************************************************************************************	
 void UpdateGame(PlayerState& P, WorldState& W) {
 	
 	//Index of current enemy being effected
@@ -118,6 +121,7 @@ void UpdateGame(PlayerState& P, WorldState& W) {
 				if (W.Rooms[P.CRI].Grid[P.PreEchoX][P.PreEchoY] != P.c) {
 					W.Rooms[P.CRI].Grid[P.PreEchoX][P.PreEchoY] = '0';
 				}
+
 				P.Echoing = false;
 				P.EchoingN = false;
 				P.EchoingS = false;
@@ -270,146 +274,161 @@ void UpdateGame(PlayerState& P, WorldState& W) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////// BOSS /////////////////////////////////////////////////////////////////////////////////////////
 	if (P.CRI == 9) {
-		for (int i = 0; i < W.Rooms[9].Boss.size(); i++) {
-			BossState& B = W.Rooms[9].Boss[i]; 
+		for (int n = 0; n < W.Rooms[9].Boss.size(); n++) {
+			BossState& B = W.Rooms[9].Boss[n]; 
 
 			if (!B.Dead) {
 				W.Rooms[9].Grid[B.X][B.Y] = P.B;
 
-				//Check Direction 
 				//If Up
 				if (B.TarDirection == 1) {
 					if (B.Struck) {
-						B.Strike = false;
-						B.PreX = B.X;
-						for (int i = 0; i < B.LList.size(); i++) {
-							W.Rooms[9].Grid[B.LList[i]][B.Y] = '0';
+						for (int i = 0; i < B.ListLength; i++) {
+							W.Rooms[9].Grid[B.LListX[i]][B.LListY[i]] = '0';
 						}
-						B.LList.clear();
+						B.Strike = false;
 						B.Struck = false;
+						B.PreX = B.X;
+						B.LListX.clear();
+						B.LListY.clear(); 
 					}
 					if (B.Strike) {
-						for (int i = 0; i < B.LList.size(); i++) {
-							W.Rooms[9].Grid[B.LList[i]][B.Y] = P.BL;
-							if (B.LList[i] == P.X && B.Y == P.Y) Respawn(W, P);
-						}
 						B.Struck = true;
 					}
 					else {
 						B.PreX--;
-						if (W.Rooms[9].Grid[B.PreX][B.Y] == '0' || W.Rooms[9].Grid[B.PreX][B.Y] == P.c) {
-							B.LList.push_back(B.PreX);
+						if (W.Rooms[9].Grid[B.PreX][B.Y] == '0' || W.Rooms[9].Grid[B.PreX][B.Y] == P.c || W.Rooms[9].Grid[B.PreX][B.Y] == P.BC) {
+							B.LListX.push_back(B.PreX);
+							B.LListY.push_back(B.PreY);
 						}
-						else B.Strike = true;
-						for (int i = 0; i < B.LList.size(); i++) {
-							W.Rooms[9].Grid[B.LList[i]][B.Y] = P.BC;
+						else {
+							B.Strike = true;
+							B.PreX = B.X;
 						}
 					}
 				}
 				//If Down
-				if (B.TarDirection == 2) {
+				else if (B.TarDirection == 2) {
 					if (B.Struck) {
-						B.Strike = false;
-						B.PreX = B.X;
-						for (int i = 0; i < B.LList.size(); i++) {
-							W.Rooms[9].Grid[B.LList[i]][B.Y] = '0';
+						for (int i = 0; i < B.ListLength; i++) {
+							W.Rooms[9].Grid[B.LListX[i]][B.LListY[i]] = '0';
 						}
-						B.LList.clear();
+						B.Strike = false;
 						B.Struck = false;
+						B.PreX = B.X;
+						B.LListX.clear();
+						B.LListY.clear();
 					}
 					if (B.Strike) {
-						for (int i = 0; i < B.LList.size(); i++) {
-							W.Rooms[9].Grid[B.LList[i]][B.Y] = P.BL;
-							if (B.LList[i] == P.X && B.Y == P.Y) Respawn(W, P);
-						}
 						B.Struck = true;
 					}
 					else {
 						B.PreX++;
-						if (W.Rooms[9].Grid[B.PreX][B.Y] == '0' || W.Rooms[9].Grid[B.PreX][B.Y] == P.c) {
-							B.LList.push_back(B.PreX);
+						if (W.Rooms[9].Grid[B.PreX][B.Y] == '0' || W.Rooms[9].Grid[B.PreX][B.Y] == P.c || W.Rooms[9].Grid[B.PreX][B.Y] == P.BC) {
+							B.LListX.push_back(B.PreX);
+							B.LListY.push_back(B.PreY);
 						}
-						else B.Strike = true;
-						for (int i = 0; i < B.LList.size(); i++) {
-							W.Rooms[9].Grid[B.LList[i]][B.Y] = P.BC;
+						else {
+							B.Strike = true;
+							B.PreX = B.X;
 						}
 					}
 				}
 				//If Left
-				if (B.TarDirection == 3) {
+				else if (B.TarDirection == 3) {
 					if (B.Struck) {
-						B.Strike = false;
-						B.PreY = B.Y;
-						for (int i = 0; i < B.LList.size(); i++) {
-							W.Rooms[9].Grid[B.X][B.LList[i]] = '0';
+						for (int i = 0; i < B.ListLength; i++) {
+							W.Rooms[9].Grid[B.LListX[i]][B.LListY[i]] = '0';
 						}
-						B.LList.clear();
+						B.Strike = false;
 						B.Struck = false;
+						B.PreY = B.Y;
+						B.LListX.clear();
+						B.LListY.clear();		
 					}
 					if (B.Strike) {
-						for (int i = 0; i < B.LList.size(); i++) {
-							W.Rooms[9].Grid[B.X][B.LList[i]] = P.BL;
-							if (B.X == P.X && B.LList[i] == P.Y) Respawn(W, P);
-						}
 						B.Struck = true;
 					}
 					else {
 						B.PreY--;
-						if (W.Rooms[9].Grid[B.X][B.PreY] == '0' || W.Rooms[9].Grid[B.X][B.PreY] == P.c) {
-							B.LList.push_back(B.PreY);
+						if (W.Rooms[9].Grid[B.X][B.PreY] == '0' || W.Rooms[9].Grid[B.X][B.PreY] == P.c || W.Rooms[9].Grid[B.X][B.PreY] == P.BC) {
+							B.LListY.push_back(B.PreY);
+							B.LListX.push_back(B.PreX);
 						}
-						else B.Strike = true;
-						for (int i = 0; i < B.LList.size(); i++) {
-							W.Rooms[9].Grid[B.X][B.LList[i]] = P.BC;
+						else {
+							B.Strike = true;
+							B.PreY = B.Y;
 						}
 					}
 				}
 				//If Right
-				if (B.TarDirection == 4) {
-					if (B.Struck) {
-						B.Strike = false;
-						B.PreY = B.Y;
-						for (int i = 0; i < B.LList.size(); i++) {
-							W.Rooms[9].Grid[B.X][B.LList[i]] = '0';
+				else if (B.TarDirection == 4) {
+					if (B.Struck) {		
+						for (int i = 0; i < B.ListLength; i++) {
+							W.Rooms[9].Grid[B.LListX[i]][B.LListY[i]] = '0';
 						}
-						B.LList.clear();
+						B.Strike = false;
 						B.Struck = false;
+						B.PreY = B.Y;
+						B.LListX.clear();
+						B.LListY.clear();
+						
 					}
 					if (B.Strike) {
-						for (int i = 0; i < B.LList.size(); i++) {
-							W.Rooms[9].Grid[B.X][B.LList[i]] = P.BL;
-							if (B.X == P.X && B.LList[i] == P.Y) Respawn(W, P);
-						}
 						B.Struck = true;
 					}
 					else {
 						B.PreY++;
-						if (W.Rooms[9].Grid[B.X][B.PreY] == '0' || W.Rooms[9].Grid[B.X][B.PreY] == P.c) {
-							B.LList.push_back(B.PreY);
+						if (W.Rooms[9].Grid[B.X][B.PreY] == '0' || W.Rooms[9].Grid[B.X][B.PreY] == P.c || W.Rooms[9].Grid[B.X][B.PreY] == P.BC) {
+							B.LListY.push_back(B.PreY);
+							B.LListX.push_back(B.PreX);
 						}
-						else B.Strike = true;
-						for (int i = 0; i < B.LList.size(); i++) {
-							W.Rooms[9].Grid[B.X][B.LList[i]] = P.BC;
+						else {
+							B.Strike = true;
+							B.PreY = B.Y; 
 						}
 					}
 				}
+				if (B.LListX > B.LListY) B.ListLength = B.LListY.size();
+				if (B.LListX < B.LListY) B.ListLength = B.LListX.size();
+
+				if (B.Strike) {
+					if (B.ListLength != NULL) {
+						for (int i = 0; i < B.ListLength; i++) {
+							if ((B.LListX.size() <= B.ListLength) && (B.LListY.size() <= B.ListLength)) {
+								W.Rooms[9].Grid[B.LListX[i]][B.LListY[i]] = P.BL;
+							}
+							if (B.LListX[i] == P.X && B.LListY[i] == P.Y) Respawn(W, P);
+						}
+					}
+				}
+				else {
+					for (int i = 0; i < B.ListLength; i++) {
+						if ((B.LListX.size() <= B.ListLength) && (B.LListY.size() <= B.ListLength)) {
+							W.Rooms[9].Grid[B.LListX[i]][B.LListY[i]] = P.BC;
+						}
+					}
+				}
+
 			}
 			else {
-				if (B.TarDirection == 3 || B.TarDirection == 4) {
-					for (int i = 0; i < B.LList.size(); i++) {
-					W.Rooms[9].Grid[B.X][B.LList[i]] = '0';
+				if (B.TarDirection == 1 || B.TarDirection == 2 || B.TarDirection == 3 || B.TarDirection == 4) {
+					for (int i = 0; i < B.LListX.size(); i++) {
+						W.Rooms[9].Grid[B.LListX[i]][B.PreY] = '0';
+						W.Rooms[9].Grid[B.X][B.Y] = P.BK; 
 					}
-				}
-				if (B.TarDirection == 1 || B.TarDirection == 2) {
-					for (int i = 0; i < B.LList.size(); i++) {
-						W.Rooms[9].Grid[B.LList[i]][B.Y] = '0';
+					for (int i = 0; i < B.LListY.size(); i++) {
+						W.Rooms[9].Grid[B.PreX][B.LListY[i]] = '0';
+						W.Rooms[9].Grid[B.X][B.Y] = P.BK;
 					}
+					B.LListX.clear();
+					B.LListY.clear();
 				}
 			}
 		}
 	}
 }
-// **************************************** INPUT **************************************************
+// ************************************************************************** INPUT **************************************************************************************************************
 void PlayerInput(PlayerState& P, WorldState& W) {
 	
 	// Get instant Player input and convert to lower case 
@@ -567,7 +586,7 @@ void PlayerInput(PlayerState& P, WorldState& W) {
 	////////////////////////////////////////////IF NOT NULL///////////////////////////////////////////////////
 	if ((P.X < W.Rooms[P.CRI].MaxGrid) && (P.X >= 0) && (P.Y < W.Rooms[P.CRI].MaxGrid) && (P.Y >= 0)) {
 		////////////////////////////////////////////IF WALL///////////////////////////////////////////////////
-		if (W.Rooms[P.CRI].Grid[P.X][P.Y] == W.v || W.Rooms[P.CRI].Grid[P.X][P.Y] == W.h || W.Rooms[P.CRI].Grid[P.X][P.Y] == W.c || W.Rooms[P.CRI].Grid[P.X][P.Y] == W.C || W.Rooms[P.CRI].Grid[P.X][P.Y] == W.l || W.Rooms[P.CRI].Grid[P.X][P.Y] == W.L || W.Rooms[P.CRI].Grid[P.X][P.Y] == W.T || W.Rooms[P.CRI].Grid[P.X][P.Y] == W.t || W.Rooms[P.CRI].Grid[P.X][P.Y] == W.F || W.Rooms[P.CRI].Grid[P.X][P.Y] == W.f) {
+		if (W.Rooms[P.CRI].Grid[P.X][P.Y] == W.v || W.Rooms[P.CRI].Grid[P.X][P.Y] == W.h || W.Rooms[P.CRI].Grid[P.X][P.Y] == W.c || W.Rooms[P.CRI].Grid[P.X][P.Y] == W.C || W.Rooms[P.CRI].Grid[P.X][P.Y] == W.l || W.Rooms[P.CRI].Grid[P.X][P.Y] == W.L || W.Rooms[P.CRI].Grid[P.X][P.Y] == W.T || W.Rooms[P.CRI].Grid[P.X][P.Y] == W.t || W.Rooms[P.CRI].Grid[P.X][P.Y] == W.F || W.Rooms[P.CRI].Grid[P.X][P.Y] == W.f || W.Rooms[P.CRI].Grid[P.X][P.Y] == W.S) {
 			P.X = P.PreviewX;
 			P.Y = P.PreviewY;
 		}
@@ -643,6 +662,15 @@ void PlayerInput(PlayerState& P, WorldState& W) {
 							P.RespawnX = 5;
 							P.RespawnY = 2;
 							break; 
+						case 9:
+							if (P.GoalProgression == 4) {
+								P.Goal = "Destroy the Lightining Bolts";
+								P.GoalProgression++;
+							}
+							P.RespawnCRI = 8;
+							P.RespawnX = 5;
+							P.RespawnY = 2;
+							break;
 						}
 
 					}
@@ -725,7 +753,12 @@ void PlayerInput(PlayerState& P, WorldState& W) {
 void CleanupGame(PlayerState& P, WorldState& W) {
 	if (P.WontheGame) {
 		Color(7); 
-		printf("YAY YOU WON!!!\n");
+		printf("__   __            _    _               _ \n");
+		printf("\\ \\ / /           | |  | |             | |\n");
+		printf(" \\ V /___  _   _  | |  | | ___  _ __   | |\n");
+		printf("  \\ // _ \\| | | | | |/\\| |/ _ \\| '_ \\  | |\n");
+		printf("  | | (_) | |_| | \\  /\\  / (_) | | | | |_|\n");
+		printf("  \\_/\\___/ \\__,_|  \\/  \\/ \\___/|_| |_| (_)\n");
 	}
 }
 	

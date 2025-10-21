@@ -70,7 +70,7 @@ void PrintScreen(WorldState& W, PlayerState& P)
 				tab++;
 			}
 			// SET COLOR Based on value of current entry being printed 
-			if (W.Rooms[P.CRI].Grid[x][y] == W.v || W.Rooms[P.CRI].Grid[x][y] == W.h || W.Rooms[P.CRI].Grid[x][y] == W.c || W.Rooms[P.CRI].Grid[x][y] == W.C || W.Rooms[P.CRI].Grid[x][y] == W.l || W.Rooms[P.CRI].Grid[x][y] == W.L || W.Rooms[P.CRI].Grid[x][y] == W.T || W.Rooms[P.CRI].Grid[x][y] == W.t || W.Rooms[P.CRI].Grid[x][y] == W.F || W.Rooms[P.CRI].Grid[x][y] == W.f) Color(0);
+			if (W.Rooms[P.CRI].Grid[x][y] == W.v || W.Rooms[P.CRI].Grid[x][y] == W.h || W.Rooms[P.CRI].Grid[x][y] == W.c || W.Rooms[P.CRI].Grid[x][y] == W.C || W.Rooms[P.CRI].Grid[x][y] == W.l || W.Rooms[P.CRI].Grid[x][y] == W.L || W.Rooms[P.CRI].Grid[x][y] == W.T || W.Rooms[P.CRI].Grid[x][y] == W.t || W.Rooms[P.CRI].Grid[x][y] == W.F || W.Rooms[P.CRI].Grid[x][y] == W.f || W.Rooms[P.CRI].Grid[x][y] == W.S) Color(0);
 			if (W.Rooms[P.CRI].Grid[x][y] == P.E || W.Rooms[P.CRI].Grid[x][y] == P.G) Color(0);
 			if (W.Rooms[P.CRI].Grid[x][y] == W.D) Color(0);
 			if (W.Rooms[P.CRI].Grid[x][y] == W.LD) Color(0);
@@ -78,12 +78,12 @@ void PrintScreen(WorldState& W, PlayerState& P)
 			
 			// If the currently printed out corrodinate is a wall or door check if it matches a corrodinate set from the echo list
 			// If yes set the color to White or Blue accordingly
-			if (W.Rooms[P.CRI].Grid[x][y] == P.E || W.Rooms[P.CRI].Grid[x][y] == P.G || W.Rooms[P.CRI].Grid[x][y] == P.B || W.Rooms[P.CRI].Grid[x][y] == W.D || W.Rooms[P.CRI].Grid[x][y] == W.LD || W.Rooms[P.CRI].Grid[x][y] == W.v || W.Rooms[P.CRI].Grid[x][y] == W.h ||  W.Rooms[P.CRI].Grid[x][y] == W.c || W.Rooms[P.CRI].Grid[x][y] == W.C || W.Rooms[P.CRI].Grid[x][y] == W.l || W.Rooms[P.CRI].Grid[x][y] == W.L || W.Rooms[P.CRI].Grid[x][y] == W.T || W.Rooms[P.CRI].Grid[x][y] == W.t || W.Rooms[P.CRI].Grid[x][y] == W.F || W.Rooms[P.CRI].Grid[x][y] == W.f) {
+			if (W.Rooms[P.CRI].Grid[x][y] == P.E || W.Rooms[P.CRI].Grid[x][y] == P.G || W.Rooms[P.CRI].Grid[x][y] == P.B || W.Rooms[P.CRI].Grid[x][y] == W.D || W.Rooms[P.CRI].Grid[x][y] == W.LD || W.Rooms[P.CRI].Grid[x][y] == W.v || W.Rooms[P.CRI].Grid[x][y] == W.h ||  W.Rooms[P.CRI].Grid[x][y] == W.c || W.Rooms[P.CRI].Grid[x][y] == W.C || W.Rooms[P.CRI].Grid[x][y] == W.l || W.Rooms[P.CRI].Grid[x][y] == W.L || W.Rooms[P.CRI].Grid[x][y] == W.T || W.Rooms[P.CRI].Grid[x][y] == W.t || W.Rooms[P.CRI].Grid[x][y] == W.F || W.Rooms[P.CRI].Grid[x][y] == W.f || W.Rooms[P.CRI].Grid[x][y] == W.S) {
 				for (int i = 0; i < W.Rooms[P.CRI].ScannedSpaces.size(); i++) {
 					if ((x == W.Rooms[P.CRI].ScannedSpaces[i][0]) && (y == W.Rooms[P.CRI].ScannedSpaces[i][1])) {
 						if (W.Rooms[P.CRI].Grid[x][y] == W.v || W.Rooms[P.CRI].Grid[x][y] == W.h) Color(7);
 						else if(W.Rooms[P.CRI].Grid[x][y] == W.c || W.Rooms[P.CRI].Grid[x][y] == W.C || W.Rooms[P.CRI].Grid[x][y] == W.l || W.Rooms[P.CRI].Grid[x][y] == W.L) Color(7);
-						else if(W.Rooms[P.CRI].Grid[x][y] == W.T || W.Rooms[P.CRI].Grid[x][y] == W.t || W.Rooms[P.CRI].Grid[x][y] == W.F || W.Rooms[P.CRI].Grid[x][y] == W.f) Color(7);
+						else if(W.Rooms[P.CRI].Grid[x][y] == W.T || W.Rooms[P.CRI].Grid[x][y] == W.t || W.Rooms[P.CRI].Grid[x][y] == W.F || W.Rooms[P.CRI].Grid[x][y] == W.f || W.Rooms[P.CRI].Grid[x][y] == W.S) Color(7);
 						else if (W.Rooms[P.CRI].Grid[x][y] == W.D) Color(6);
 						else if (W.Rooms[P.CRI].Grid[x][y] == W.LD) Color(14);
 						else if (W.Rooms[P.CRI].Grid[x][y] == P.B) Color(4);
@@ -123,6 +123,7 @@ void PrintScreen(WorldState& W, PlayerState& P)
 			}
 			else if (W.Rooms[P.CRI].Grid[x][y] == P.BL) Color(119);
 			else if (W.Rooms[P.CRI].Grid[x][y] == P.BC) Color(15);
+			else if (W.Rooms[P.CRI].Grid[x][y] == P.BK) Color(4);
 
 			printf("%c ", W.Rooms[P.CRI].Grid[x][y]);
 			// This removes the previously scanned location from the echo list 
@@ -147,15 +148,29 @@ void PrintScreen(WorldState& W, PlayerState& P)
 		Color(7); 
 		printf("\n"); 
 		for (int i = 0; i < 4; i++) printf("\t");
-		printf("WASD to Move.\n"); 
+		printf("WASD to "); 
+		Color(9); 
+		printf("Move\n");
 		for (int i = 0; i < 4; i++) printf("\t");
-		printf("Arrow Keys to ECHOLOCATE\n");
+		Color(7);
+		printf("Arrow Keys to ");
+		Color(13); 
+		printf("ECHOLOCATE\n");
 		for (int i = 0; i < 4; i++) printf("\t");
-		printf("X for Key Code and Inventory\n");
+		Color(14); 
+		printf("X");
+		Color(7);
+		printf(" for Key Code and Inventory\n");
 		for (int i = 0; i < 4; i++) printf("\t");
-		printf("C for Map\n"); 
+		Color(14);
+		printf("C");
+		Color(7);
+		printf(" for Map\n"); 
 		for (int i = 0; i < 4; i++) printf("\t");
-		printf("V for Hints\n");
+		Color(14);
+		printf("V");
+		Color(7);
+		printf(" for Hints\n");
 		for (int i = 0; i < 4; i++) printf("\t");
 		printf("Q to Quit\n"); 
 	}
@@ -169,6 +184,19 @@ void PrintScreen(WorldState& W, PlayerState& P)
 		printf("Strike back against the darkness!\n");
 		for (int i = 0; i < 4; i++) printf("\t");
 		printf("Press E to attack\n");
+	}
+	//Boss Health
+	if (P.CRI == 9) {
+		Color(7);
+		printf("\n");
+		for (int i = 0; i < 4; i++) printf("\t");
+		printf("\tZEUS HEALTH: |");
+		Color(12); 
+		for (int b = 0; b < P.BossHealth; b++) printf("==="); 
+		Color(0);
+		for (int b = 0; b < (6 - P.BossHealth); b++) printf("===");
+		Color(7); 
+		printf("|\n"); 
 	}
 }
 
@@ -194,7 +222,7 @@ void Inventory(WorldState& W, PlayerState& P) {
 	Color(7);
 	printf(": Echolocation (Echolocate to see whats in front of you)\n\n");
 	Color(7);
-	printf("%c,%c,%c,%c,etc", W.h, W.v, W.L, W.T);
+	printf("%c,%c,%c,%c,%c,etc", W.h, W.v, W.L, W.T, W.S);
 	printf(": Walls\n\n");
 	Color(6);
 	printf("%c", W.D);
@@ -208,10 +236,12 @@ void Inventory(WorldState& W, PlayerState& P) {
 	printf("%c", P.E);
 	Color(7);
 	printf(": Monster (They are blind and only move towards sounds)\n\n");
-	Color(12);
-	printf("%c", P.G);
-	Color(7);
-	printf(": Lost Soul (Blind but can hear through walls)\n\n");
+	if (P.GhostEncountered) {
+		Color(12);
+		printf("%c", P.G);
+		Color(7);
+		printf(": Lost Soul (Can hear and follow you from anywhere even through walls)\n\n");
+	}
 	Color(14);
 	printf("%c", P.k);
 	Color(7);
@@ -221,6 +251,17 @@ void Inventory(WorldState& W, PlayerState& P) {
 		printf("%c", P.S);
 		Color(7);
 		printf(": The Sword (Press E to Attack)\n\n");
+	}
+	if (P.BossEncountered) {
+		Color(4);
+		printf("%c", P.B);
+		Color(7);
+		printf(": Boss Hit Points (Destroy them to stop the lightning)\n\n");
+		Color(119);
+		printf("%c", P.BL);
+		Color(7);
+		printf(": Lightning (Takes time to charge up)\n\n");
+
 	}
 
 	char input = 0;
@@ -243,7 +284,7 @@ void Hints(WorldState& W, PlayerState& P) {
 	printf("- AVOID pressing arrow keys while echolocating. You might miss instructions or Enemies\n\n");
 	printf("----------------------------------------------");
 	Color(12); printf("\nENEMIES: \n\n");
-	Color(7); printf("- When scanned the ");
+	Color(7); printf("- When hit by the echolocation the ");
 	Color(12); printf("%c", P.E);
 	Color(7);
 	printf(" moves towards the position the player was at when they echolocated then stops\n\n");
@@ -253,12 +294,38 @@ void Hints(WorldState& W, PlayerState& P) {
 	printf(" is invisible while moving\n\n"); 
 	printf("- Try to learn where the enemies are positioned and move around them\n\n"); 
 	printf("- Remember everything is reset when you die so if you're softlocked die to reset\n\n"); 
+	printf("- When you Echolocate the ");
+	Color(12); printf("%c", P.G);
+	Color(7);
+	printf(" moves towards the position the player was at when they echolocated then stops\n\n");
+	printf("- The ");
+	Color(12); printf("%c", P.G);
+	Color(7);
+	printf(" can move through walls and other enemies to get at you but while it's in a wall it turns ");
+	Color(8); printf("%c\n\n", P.G);
+	Color(7);
 	printf("----------------------------------------------");
 	Color(9); printf("\nGENERAL\n\n");
 	Color(7);
 	printf("- Don't move too fast. Some information is only on screen until you press an input\n\n"); 
 	printf("- Check the Key Code and Inventory for information on what every item and object looks like\n\n"); 
 	printf("- Check your Map for descriptions of rooms and maybe some hints\n\n"); 
+	printf("----------------------------------------------");
+	if (P.BossEncountered) {
+		Color(4); printf("\nTHE BOSS\n\n");
+		Color(7);
+		printf("The Boss (Zeus) has six ");
+		Color(4); printf("%c", P.B);
+		Color(7);
+		printf(" scattered around the room. Destroy them all to win\n\n");
+		printf("The ");
+		Color(4); printf("%c", P.B);
+		Color(7);
+		printf(" shoot lightning in a line. Use the lightning's starting position to identify where the ");
+		Color(4); printf("%c", P.B);
+		Color(7);
+		printf(" are\n\n"); 
+	}
 
 	char input = 0;
 	printf("(Press R to close)");
@@ -334,7 +401,7 @@ void Map(WorldState& W, PlayerState& P) {
 		{'|',' ',' ',' ',W.b,W.b,W.b,W.b,W.b,W.b,' ',' ',' ',' ',' ','|'},
 		{'|',' ',' ',' ',W.b,W.b,W.b,W.b,W.b,W.b,' ',' ',' ',' ',' ','|'},
 		{'|',' ',' ',' ',W.b,W.b,W.b,W.b,W.b,W.b,' ',' ',' ',' ',' ','|'},
-		{'|',' ',' ',' ',W.b,W.b,W.b,W.b,W.b,W.b,' ',' ',' ',' ',' ','|'},
+		{'|',' ',' ',' ',W.b,W.b,W.b,W.b,W.b,W.b,' ',' ',' ',' ',' ','|'}
 	}; 
 	int x = 0;
 	int y = 0; 
@@ -408,6 +475,15 @@ void Respawn(WorldState& W, PlayerState& P) {
 			}
 		}
 	}
+	if (P.CRI == 9) {
+		for (int i = 0; i < W.Rooms[9].Boss.size(); i++) {
+			if (!W.Rooms[9].Boss[i].Dead) {
+				W.Rooms[9].Boss[i].Strike = false;
+				W.Rooms[9].Boss[i].Struck = false; 
+
+			}
+		}
+	}
 	//Reset Sword
 	P.Attacking = false; 
 	if (P.SwordFound) {
@@ -473,8 +549,10 @@ void KillBoss(WorldState& W, PlayerState& P, int X, int Y) {
 	for (int i = 0; i < W.Rooms[P.CRI].Boss.size(); i++) {
 		if ((W.Rooms[P.CRI].Boss[i].X == X) && (W.Rooms[P.CRI].Boss[i].Y == Y)) {
 			W.Rooms[P.CRI].Boss[i].Dead = true;
+			W.Rooms[P.CRI].Boss[i].Strike = false;
 		}
 	}
+	P.BossHealth--; 
 	P.KillingBlow = true;
 }
 

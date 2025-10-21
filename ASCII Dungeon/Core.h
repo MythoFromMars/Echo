@@ -48,6 +48,7 @@ struct PlayerState
 	bool Died;
 	bool WantsToExit;
 	bool WontheGame = false; 
+	int BossHealth = 6; 
 
 	// Current Room Index
 	int CRI;
@@ -59,9 +60,10 @@ struct PlayerState
 	char eH = (char)238; //Echo
 	char k = (char)168;	//Key
 	char S = (char)245; //Sword
-	char BL = (char)35; //Boss Lightning 
+	char BL = (char)236; //Boss Lightning 
 	char B = (char)225; //Boss HitPoints 
 	char BC = (char)250; //BossCharge 
+	char BK = '*'; //BossKill
 
 	//Keys 
 	float KeyNum = 0; 
@@ -70,6 +72,9 @@ struct PlayerState
 	int GoalProgression = 0; 
 	const char* Goal = "Make your way to The Market";
 	const char* Sword = "Not Found\t"; 
+	bool GhostEncountered = false; 
+	bool BossEncountered = false; 
+
 };
 
 struct EnemyState 
@@ -107,10 +112,13 @@ struct BossState
 	//2: Down
 	//3: Left
 	//4: Right
+	int TarDirection; 
+	int CurrDirect; 
 	int PreX; 
 	int PreY;
-	int TarDirection; 
-	std::vector<int> LList; 
+	std::vector<int> LListX; 
+	std::vector<int> LListY;
+	int ListLength; 
 	bool Strike = false; 
 	bool Struck = false; 
 };
@@ -153,6 +161,7 @@ struct WorldState
 	char t = (char)202; //up T
 	char F = (char)185; //left T
 	char f = (char)204; //right T
+	char S = (char)35; // #
 	char M = (char)178; //Dark map
 	char m = (char)177; //Light map
 	char b = (char)176; //Background map
