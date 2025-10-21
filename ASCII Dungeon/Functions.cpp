@@ -23,6 +23,7 @@
 //14: Yellow
 //15: Bright white
 //Numbers after 15 include background colors
+// 
 
 void Color(int color)
 {
@@ -73,10 +74,11 @@ void PrintScreen(WorldState& W, PlayerState& P)
 			if (W.Rooms[P.CRI].Grid[x][y] == P.E || W.Rooms[P.CRI].Grid[x][y] == P.G) Color(0);
 			if (W.Rooms[P.CRI].Grid[x][y] == W.D) Color(0);
 			if (W.Rooms[P.CRI].Grid[x][y] == W.LD) Color(0);
+			if (W.Rooms[P.CRI].Grid[x][y] == P.B) Color(0);
 			
 			// If the currently printed out corrodinate is a wall or door check if it matches a corrodinate set from the echo list
 			// If yes set the color to White or Blue accordingly
-			if (W.Rooms[P.CRI].Grid[x][y] == P.E || W.Rooms[P.CRI].Grid[x][y] == P.G || W.Rooms[P.CRI].Grid[x][y] == W.D || W.Rooms[P.CRI].Grid[x][y] == W.LD || W.Rooms[P.CRI].Grid[x][y] == W.v || W.Rooms[P.CRI].Grid[x][y] == W.h ||  W.Rooms[P.CRI].Grid[x][y] == W.c || W.Rooms[P.CRI].Grid[x][y] == W.C || W.Rooms[P.CRI].Grid[x][y] == W.l || W.Rooms[P.CRI].Grid[x][y] == W.L || W.Rooms[P.CRI].Grid[x][y] == W.T || W.Rooms[P.CRI].Grid[x][y] == W.t || W.Rooms[P.CRI].Grid[x][y] == W.F || W.Rooms[P.CRI].Grid[x][y] == W.f) {
+			if (W.Rooms[P.CRI].Grid[x][y] == P.E || W.Rooms[P.CRI].Grid[x][y] == P.G || W.Rooms[P.CRI].Grid[x][y] == P.B || W.Rooms[P.CRI].Grid[x][y] == W.D || W.Rooms[P.CRI].Grid[x][y] == W.LD || W.Rooms[P.CRI].Grid[x][y] == W.v || W.Rooms[P.CRI].Grid[x][y] == W.h ||  W.Rooms[P.CRI].Grid[x][y] == W.c || W.Rooms[P.CRI].Grid[x][y] == W.C || W.Rooms[P.CRI].Grid[x][y] == W.l || W.Rooms[P.CRI].Grid[x][y] == W.L || W.Rooms[P.CRI].Grid[x][y] == W.T || W.Rooms[P.CRI].Grid[x][y] == W.t || W.Rooms[P.CRI].Grid[x][y] == W.F || W.Rooms[P.CRI].Grid[x][y] == W.f) {
 				for (int i = 0; i < W.Rooms[P.CRI].ScannedSpaces.size(); i++) {
 					if ((x == W.Rooms[P.CRI].ScannedSpaces[i][0]) && (y == W.Rooms[P.CRI].ScannedSpaces[i][1])) {
 						if (W.Rooms[P.CRI].Grid[x][y] == W.v || W.Rooms[P.CRI].Grid[x][y] == W.h) Color(7);
@@ -84,6 +86,7 @@ void PrintScreen(WorldState& W, PlayerState& P)
 						else if(W.Rooms[P.CRI].Grid[x][y] == W.T || W.Rooms[P.CRI].Grid[x][y] == W.t || W.Rooms[P.CRI].Grid[x][y] == W.F || W.Rooms[P.CRI].Grid[x][y] == W.f) Color(7);
 						else if (W.Rooms[P.CRI].Grid[x][y] == W.D) Color(6);
 						else if (W.Rooms[P.CRI].Grid[x][y] == W.LD) Color(14);
+						else if (W.Rooms[P.CRI].Grid[x][y] == P.B) Color(4);
 						//Enemy Color fades 
 						else if (W.Rooms[P.CRI].Grid[x][y] == P.E) {
 							for (int n = 0; n < W.Rooms[P.CRI].Enemies.size(); n++) {
@@ -115,9 +118,11 @@ void PrintScreen(WorldState& W, PlayerState& P)
 			else if (W.Rooms[P.CRI].Grid[x][y] == P.k) Color(14);
 			else if (W.Rooms[P.CRI].Grid[x][y] == '!') Color(14);
 			else if (W.Rooms[P.CRI].Grid[x][y] == P.S || W.Rooms[P.CRI].Grid[x][y] == 'v' || W.Rooms[P.CRI].Grid[x][y] == '^' || W.Rooms[P.CRI].Grid[x][y] == '>' || W.Rooms[P.CRI].Grid[x][y] == '<') {
-				if (P.KillingBlow) Color(4); 
+				if (P.KillingBlow) Color(4);
 				else Color(11);
 			}
+			else if (W.Rooms[P.CRI].Grid[x][y] == P.BL) Color(119);
+			else if (W.Rooms[P.CRI].Grid[x][y] == P.BC) Color(15);
 
 			printf("%c ", W.Rooms[P.CRI].Grid[x][y]);
 			// This removes the previously scanned location from the echo list 
@@ -311,14 +316,19 @@ void Map(WorldState& W, PlayerState& P) {
 		break;
 	case 8:
 		CurrRoom = W.Room9;
+		CurrName = "The Climb: \n";
+		CurrDesc = "Face your tormentor.\n"; 
+		break;
+	case 9:
+		CurrRoom = W.Room10;
 		CurrName = "Mountain Top: \n";
-		CurrDesc = "Face your tormentor.\nHe strikes with lightning, but you are the thunder ECHOING through the heavens.\n"; 
+		CurrDesc = "He strikes with lightning, but you are the thunder ECHOING through the heavens.\n";
 		break;
 	}
 
 	std::vector<std::vector<char>> Map = {
-		{'|',' ',' ',' ',' ',' ',' ',W.b,W.b,W.b,' ',' ',' ',' ',' ','|'},
-		{'|',' ',' ',' ',' ',' ',' ',W.b,W.b,W.b,' ',' ',' ',' ',' ','|'},
+		{'|',W.b,W.b,W.b,W.b,W.b,W.b,W.b,W.b,W.b,' ',' ',' ',' ',' ','|'},
+		{'|',W.b,W.b,W.b,W.b,W.b,W.b,W.b,W.b,W.b,' ',' ',' ',' ',' ','|'},
 		{'|',W.b,W.b,W.b,W.b,W.b,W.b,W.b,W.b,W.b,W.b,W.b,W.b,' ',' ','|'},
 		{'|',W.b,W.b,W.b,W.b,W.b,W.b,W.b,W.b,W.b,W.b,W.b,W.b,' ',' ','|'},
 		{'|',' ',' ',' ',W.b,W.b,W.b,W.b,W.b,W.b,' ',' ',' ',' ',' ','|'},
@@ -400,19 +410,21 @@ void Respawn(WorldState& W, PlayerState& P) {
 	}
 	//Reset Sword
 	P.Attacking = false; 
-	switch (P.Facing) {
-	case 1:
-		W.Rooms[P.CRI].Grid[P.PreSX][P.Y] = P.PreSChar;
-		break;
-	case 2:
-		W.Rooms[P.CRI].Grid[P.X][P.PreSY] = P.PreSChar;
-		break;
-	case 3:
-		W.Rooms[P.CRI].Grid[P.PreSX][P.Y] = P.PreSChar;
-		break;
-	case 4:
-		W.Rooms[P.CRI].Grid[P.X][P.PreSY] = P.PreSChar;
-		break;
+	if (P.SwordFound) {
+		switch (P.Facing) {
+		case 1:
+			W.Rooms[P.CRI].Grid[P.PreSX][P.Y] = P.PreSChar;
+			break;
+		case 2:
+			W.Rooms[P.CRI].Grid[P.X][P.PreSY] = P.PreSChar;
+			break;
+		case 3:
+			W.Rooms[P.CRI].Grid[P.PreSX][P.Y] = P.PreSChar;
+			break;
+		case 4:
+			W.Rooms[P.CRI].Grid[P.X][P.PreSY] = P.PreSChar;
+			break;
+		}
 	}
 
 	//Reset Previous Echo 
@@ -455,6 +467,15 @@ void Kill(WorldState& W, PlayerState& P, int X, int Y) {
 		}
 	}
 	P.KillingBlow = true; 
+}
+void KillBoss(WorldState& W, PlayerState& P, int X, int Y) {
+
+	for (int i = 0; i < W.Rooms[P.CRI].Boss.size(); i++) {
+		if ((W.Rooms[P.CRI].Boss[i].X == X) && (W.Rooms[P.CRI].Boss[i].Y == Y)) {
+			W.Rooms[P.CRI].Boss[i].Dead = true;
+		}
+	}
+	P.KillingBlow = true;
 }
 
 

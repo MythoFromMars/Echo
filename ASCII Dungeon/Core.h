@@ -59,6 +59,9 @@ struct PlayerState
 	char eH = (char)238; //Echo
 	char k = (char)168;	//Key
 	char S = (char)245; //Sword
+	char BL = (char)35; //Boss Lightning 
+	char B = (char)225; //Boss HitPoints 
+	char BC = (char)250; //BossCharge 
 
 	//Keys 
 	float KeyNum = 0; 
@@ -95,6 +98,23 @@ struct EnemyState
 
 };
 
+struct BossState
+{
+	int X;
+	int Y;
+	bool Dead = false; 
+	//1: Up
+	//2: Down
+	//3: Left
+	//4: Right
+	int PreX; 
+	int PreY;
+	int TarDirection; 
+	std::vector<int> LList; 
+	bool Strike = false; 
+	bool Struck = false; 
+};
+
 struct RoomExits
 {
 	int x;
@@ -113,6 +133,8 @@ struct RoomData
 	std::vector<std::vector<int>> ResetList; 
 	std::vector<EnemyState> Enemies; 
 	std::vector<std::vector<int>> EnemyScannedSpaces;
+	std::vector<BossState> Boss;
+
 	bool Entered = false; 
 };
 
@@ -174,6 +196,10 @@ struct WorldState
 	std::vector<std::vector<int>>Room9 = {
 		{1,2},{2,2},{3,2},
 		{1,3},{2,3},{3,3}
+	};
+	std::vector<std::vector<int>>Room10 = {
+		{1,0},{2,0},{3,0},{4,0},{5,0},{6,0},
+		{1,1},{2,1},{3,1},{4,1},{5,1},{6,1}
 	};
 };
 

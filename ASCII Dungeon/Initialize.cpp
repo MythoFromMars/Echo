@@ -30,8 +30,8 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 	Room1.Grid = {
 	{W.v,W.D,W.h,W.h,W.v},
 	{W.v,'0','0','0',W.v},
-	{W.v,'0',P.c,'0',W.v},
-	{W.v,P.S,'0','0',W.v},
+	{W.v,'0','0','0',W.v},
+	{W.v,'0','0','0',W.v},
 	{W.v,W.h,W.c,W.D,W.v}
 	};
 // Exit to 2
@@ -51,11 +51,11 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 	Room2.MaxGrid = 9;
 	Room2.Grid = {
 	{W.v,W.h,W.h,W.h,W.h,W.v,W.h,W.t,W.v},
-	{W.v,P.E,'0','0','0',W.v,P.E,'0',W.v},
+	{W.F,P.E,'0','0','0',W.v,P.E,'0',W.v},
 	{W.v,'0','0',W.v,'0',W.v,'0','0',W.L},
 	{W.v,'0','0',W.v,'0','0','0','0',W.D},
 	{W.v,W.h,W.h,W.t,W.h,W.c,'0',W.h,W.v},
-	{W.v,'0','0','0','0',W.v,'0','0',W.v},
+	{W.F,'0','0','0','0',W.v,'0','0',W.v},
 	{W.v,'0','0','0','0',W.v,'0','0',W.v},
 	{W.v,'0','0','0','0','0','0','0',W.v},
 	{W.v,W.D,W.h,W.h,W.T,W.h,W.h,W.h,W.v}
@@ -193,12 +193,12 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 	{W.v,P.E,'0','0',P.G,W.D},
 	{W.v,W.h,W.h,W.h,W.h,W.h},
 	};
-	// Exit to 1
+// Exit to 1
 	RoomExits R7ExitTo1{};
 	AddExit(R7ExitTo1, 1, 0, 1, 3, 3);
 	//Adds Room to global roomdata 
 	Room7.Exits.push_back(R7ExitTo1);
-	// Exit to 8
+// Exit to 8
 	RoomExits R7ExitTo8{};
 	AddExit(R7ExitTo8, 5, 4, 8, 4, 8);
 	//Adds Room to global roomdata 
@@ -218,7 +218,7 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 	RoomData Room8{};
 	Room8.MaxGrid = 10;
 	Room8.Grid = {
-	{W.v,W.h,W.h,W.h,'0','0','0','0','0','0'},
+	{W.v,W.h,W.h,W.D,'0','0','0','0','0','0'},
 	{W.v,'0','!','0',W.f,W.h,W.h,W.h,W.h,W.h},
 	{W.v,'0',W.h,W.h,W.C,'0',P.G,'0','0',W.v},
 	{W.v,P.G,'0','0','0','0',W.l,W.c,'0',W.v},
@@ -226,18 +226,22 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 	{W.v,'0',W.L,W.t,W.C,P.E,'0','0','0',W.v},
 	{W.v,P.E,'0','0','0','0',W.l,W.c,'0',W.v},
 	{W.v,W.h,W.h,W.h,W.h,W.h,W.t,W.C,'0',W.v},
-	{'0','0','0',W.D,'0','0','0','0',P.G,W.v},
+	{'0','0','0',W.D,'0','0','0','0',P.E,W.v},
 	{'0','0','0','0',W.h,W.h,W.h,W.h,W.h,W.v},
 	};
-	// Exit to 7
+// Exit to 7
 	RoomExits R8ExitTo7{};
 	AddExit(R8ExitTo7, 3, 8, 7, 4, 4);
 	//Adds Room to global roomdata 
 	Room8.Exits.push_back(R8ExitTo7);
+// Exit to 2
+	RoomExits R8ExitTo2{};
+	AddExit(R8ExitTo2, 3, 0, 2, 7, 7);
+	//Adds Room to global roomdata 
+	Room8.Exits.push_back(R8ExitTo2);
 // Enemy 1
 	EnemyState E8_1{};
 	AddEnemy(E8_1, 8, 8);
-	E8_1.Ghost = true; 
 	Room8.Enemies.push_back(E8_1);
 // Enemy 2
 	EnemyState E8_2{};
@@ -261,20 +265,64 @@ void InitializeGame(PlayerState& P, WorldState& W) {
 	///////////////////////////////ROOM 9/////////////////////////////////////////////////
 	// Creates Room and Room Data
 	RoomData Room9{};
-	Room9.MaxGrid = 5;
+	Room9.MaxGrid = 8;
 	Room9.Grid = {
-	{W.v,W.h,W.h,W.h,W.v},
-	{W.v,'0','0','0',W.v},
-	{W.v,'0','0','0',W.D},
-	{W.v,'0','0','0',W.v},
-	{W.v,W.h,W.c,W.h,W.v}
+	{W.v,W.h,W.D,W.h,W.v,'0','0','0'},
+	{W.v,P.S,'0','0',W.v,'0','0','0'},
+	{W.v,'0','0','0',W.v,'0','0','0'},
+	{W.v,'0','0','0',W.L,W.h,W.h,W.v},
+	{W.v,'0','0','0','0','0','0',W.v},
+	{W.v,'0','0','0','0','0','0',W.D},
+	{W.v,'0','0','0','0','0','0',W.l},
+	{W.v,W.h,W.h,W.h,W.h,W.h,W.h,W.v}
 	};
-	// Exit to 2
+// Exit to 2
 	RoomExits R9ExitTo2{};
-	AddExit(R9ExitTo2, 4, 2, 2, 1, 3);
+	AddExit(R9ExitTo2, 7, 5, 2, 1, 3);
 	//Adds Room to global roomdata 
 	Room9.Exits.push_back(R9ExitTo2);
+// Exit to 10
+	RoomExits R9ExitTo10{};
+	AddExit(R9ExitTo10, 2, 0, 10, 2, 10);
+	//Adds Room to global roomdata 
+	Room9.Exits.push_back(R9ExitTo10);
 	W.Rooms.push_back(Room9);
+	///////////////////////////////ROOM 10/////////////////////////////////////////////////
+	// Creates Room and Room Data
+	RoomData Room10{};
+	Room10.MaxGrid = 15;
+	Room10.Grid = {
+	{W.v,W.h,W.h,W.h,W.h,W.h,W.h,W.h,W.h,W.h,W.h,W.h,W.h,W.h,W.v},
+	{W.v,'0','0','0','0','0','0','0','0','0','0','0','0','0',W.v},
+	{W.v,'0','0','0','0','0','0','0','0','0','0','0','0','0',W.v},
+	{W.v,'0','0','0','0','0','0','0','0','0','0','0','0','0',W.v},
+	{W.v,'0','0','0','0','0','0','0','0','0','0','0','0','0',W.v},
+	{W.v,'0','0','0','0','0','0','0','0','0','0','0','0','0',W.v},
+	{W.v,'0','0','0','0','0','0','0','0','0','0','0','0','0',W.v},
+	{W.v,'0','0','0','0','0','0','0','0','0','0','0','0','0',W.v},
+	{W.v,'0','0','0',P.B,'0','0','0','0',W.v,'0','0','0','0',W.v},
+	{W.v,'0','0','0','0','0','0','0','0','0','0','0','0','0',W.v},
+	{W.v,'0','0','0','0','0','0','0','0','0','0','0','0','0',W.v},
+	{W.v,W.h,W.D,W.h,W.c,'0','0','0','0','0','0','0','0','0',W.f},
+	{W.v,'0','0','0',W.v,'0','0','0','0','0','0','0','0','0',W.v},
+	{W.v,'0','0','0',W.v,'0','0',W.l,W.h,W.h,W.h,W.h,W.T,W.h,W.v},
+	{W.v,'0','0','0',W.v,W.h,W.h,W.h,'0','0','0','0','0','0',W.v}
+	};
+// Exit to 2
+	RoomExits R10ExitTo9{};
+	AddExit(R10ExitTo9, 2, 11, 9, 2, 1);
+	//Adds Room to global roomdata 
+	Room10.Exits.push_back(R10ExitTo9);
+// Boss Point 1
+	BossState Point1{};
+	Point1.X = 8;
+	Point1.Y = 4;
+	Point1.PreX = Point1.X;
+	Point1.PreY = Point1.Y;
+	Point1.TarDirection = 1;
+	Room10.Boss.push_back(Point1);
+	W.Rooms.push_back(Room10);
+ 
 
 	P.CRI = 0;
 	W.MapList.push_back(W.Room1);

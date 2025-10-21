@@ -19,6 +19,8 @@ void Respawn(WorldState& W, PlayerState& P);
 
 void Kill(WorldState& W, PlayerState& P, int X, int Y);
 
+void KillBoss(WorldState& W, PlayerState& P, int X, int Y); 
+
 void debugI(int i); 
 
 void debugC(char i);
